@@ -2,10 +2,15 @@ var express = require("express");
 var bodyParser = require("body-parser"); 
 
 var app = express(); 
-app.use(bodyParser.urlencoded({ extended: false }));  
+app.use(bodyParser.json())
 
 var hostName = '127.0.0.1';
-var port = 8080;
+var port = 8991;
+var token = '';
+var adminuser = 'admin';
+var adminpw = '123999';
+
+const mysqlapi = require('./mysql.js');
 
 app.all('*', function(req, res, next) {  
     res.header("Access-Control-Allow-Origin", "*");  
@@ -22,9 +27,41 @@ app.get("/get",function(req,res){
     res.send("这是get请求");
 })
 
-app.post("/post",function(req,res){
-    console.log("请求参数：",req.body);
-    var result = {code:200,msg:"post请求成功"};
+app.post("/post",async function(req,res){
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    console.log("请求参数：", req.body);
+    console.log(token);
+    console.log(req.body.token);
+    var result = {
+        code: 500
+    }
+    if(req.body.token == token){
+        const rows = await mysqlapi.query(req.body.sql);
+        result = {code: 200, data: rows};
+        console.log(rows);
+    }
+    res.send(result);
+});
+
+app.post("/login",function(req,res){
+    console.log("login请求参数：",req.body);
+    var result = {code: 500};
+    var str = ''
+    if(req.body.user == adminuser && req.body.password == adminpw){
+        str = '';
+        const arr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];// , 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+        for (let i = 1; i <= 32; i += 1) {
+            const random = Math.floor(Math.random() * arr.length);
+            str += arr[random];
+        }
+        console.log(str);
+        result = {
+            code: 200,
+            token: str
+        };
+        token = str;
+    };
     res.send(result);
 });
 
