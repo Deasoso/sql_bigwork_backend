@@ -30,15 +30,17 @@ app.get("/get",function(req,res){
 app.post("/post",async function(req,res){
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     console.log("请求参数：", req.body);
-    console.log(token);
-    console.log(req.body.token);
     var result = {
         code: 500
     }
     if(req.body.token == token){
-        const rows = await mysqlapi.query(req.body.sql);
-        result = {code: 200, data: rows};
-        console.log(rows);
+        try{
+            const rows = await mysqlapi.query(req.body.sql);
+            result = {code: 200, data: rows};
+        }catch{
+            result = {code: 500}
+            res.send(result);
+        }
     }
     res.send(result);
 });
@@ -55,7 +57,6 @@ app.post("/login",function(req,res){
             const random = Math.floor(Math.random() * arr.length);
             str += arr[random];
         }
-        console.log(str);
         result = {
             code: 200,
             token: str
