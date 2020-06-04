@@ -2,7 +2,7 @@ const mysql = require('mysql');
 
 const connection = mysql.createConnection({
   host     : '127.0.0.1',
-  port     : '3308',
+  port     : '3306',
   user     : 'root',
   password : '123999',
   database : 'book'
@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
 
 const pool  = mysql.createPool({
   host     : '127.0.0.1',   // 数据库地址
-  port     : '3308',
+  port     : '3306',
   user     : 'root',    // 数据库用户
   password : '123999',   // 数据库密码
   database : 'book',  // 选中数据库
