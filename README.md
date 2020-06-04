@@ -26,13 +26,9 @@ $mysql -u root -p -h 127.0.0.1 -P 3308
 
     npm install
 
-## 运行server
+## 运行后端
 
     node src/server.js
-
-## 运行httpserver 
-
-    node src/httpserver.js
     
 ## 初始化数据库
 
