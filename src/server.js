@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 var app = express(); 
 app.use(bodyParser.json())
 
-var hostName = '127.0.0.1';
+var hostName = '0.0.0.0';
 var port = 8991;
 var token = '';
 var adminuser = 'admin';
